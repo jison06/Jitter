@@ -1,0 +1,12 @@
+name = "worker"
+type = "javascript"
+
+kv-namespaces = [
+  # { binding = "general_social_media", id="09b7b67dcb87416a8b3cdb2528fc6229" }
+  { binding = "general_social_media", preview_id = "1986aa426c9947d98979697d2af03baa", id = "09b7b67dcb87416a8b3cdb2528fc6229" }
+]
+account_id = "83539f629ce65112adce0ab982d34513"
+workers_dev = true
+route = ""
+zone_id = ""
+compatibility_date = "2021-11-15"
