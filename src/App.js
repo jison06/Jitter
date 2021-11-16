@@ -7,9 +7,7 @@ import { Typography, Button, Affix } from "antd";
 import BaseForm from "./components/BaseForm";
 const { Title } = Typography;
 
-// axios.defaults.proxy.host = "https://worker.jison0709.workers.dev";
 const worker = axios.create({
-  // baseURL: "http://127.0.0.1:8787",
   baseURL: "https://worker.jison0709.workers.dev",
   timeout: 1000,
 });
@@ -165,27 +163,6 @@ const App = () => {
         </>
       )}
       {RenderModal(createButtonClicked, posts.length)}
-      {/* {createButtonClicked ? ( */}
-      {/*   <> */}
-      {/*     <BaseForm */}
-      {/*       formName="Post" */}
-      {/*       onCancelClick={handleCancelClick} */}
-      {/*       onSubmission={handleSubmit} */}
-      {/*       buttonClicked={createButtonClicked} */}
-      {/*     /> */}
-      {/*   </> */}
-      {/* ) : ( */}
-      {/*   <Affix offsetBottom={60}> */}
-      {/*     <Button */}
-      {/*       type="primary" */}
-      {/*       onClick={() => setCreateButtonClicked(true)} */}
-      {/*       style={{ float: "right", marginRight: 25 }} */}
-      {/*       shape="circle" */}
-      {/*     > */}
-      {/*       + */}
-      {/*     </Button> */}
-      {/*   </Affix> */}
-      {/* )} */}
     </div>
   );
 };
