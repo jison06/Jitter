@@ -18,8 +18,13 @@ async function handleRequest(request) {
     return handlePOSTRequest(request)
   } else if (request.method === 'OPTIONS') {
     return new Response(null, { status: 200, headers: corsHeaders })
-  } else {
+  } else if (request.method === 'PATCH') {
     return handlePATCHRequest(request)
+  } else {
+    return new Response(
+      'Hello! Use the /posts endpoint to interact with this worker!',
+      { headers: { 'content-type': 'text/plain' } },
+    )
   }
 }
 
@@ -74,11 +79,16 @@ async function handlePOSTRequest(request) {
   if (url.pathname === '/posts') {
     let allPosts = JSON.parse(await general_social_media.get('posts')) || []
     let newPost = JSON.parse(await request.text())
-    let mostCurrentPost = allPosts.pop() //getting the latest post in KV
-    newPost.id = mostCurrentPost.id + 1 //adding an index to the new post
-    allPosts.push(mostCurrentPost)
-    allPosts.push(newPost)
-    await general_social_media.put('posts', JSON.stringify(allPosts))
+    if (allPosts.length) {
+      let mostCurrentPost = allPosts.pop() //getting the latest post in KV
+      newPost.id = mostCurrentPost.id + 1 //adding an index to the new post
+      allPosts.push(mostCurrentPost)
+      allPosts.push(newPost)
+      await general_social_media.put('posts', JSON.stringify(allPosts))
+    } else {
+      newPost.id = 1
+      await general_social_media.put('posts', JSON.stringify(newPost))
+    }
     let headers = { ...corsHeaders, 'content-type': 'application/json' }
     return new Response(JSON.stringify(newPost), {
       headers: headers,
