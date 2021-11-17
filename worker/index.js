@@ -20,11 +20,6 @@ async function handleRequest(request) {
     return new Response(null, { status: 200, headers: corsHeaders })
   } else if (request.method === 'PATCH') {
     return handlePATCHRequest(request)
-  } else {
-    return new Response(
-      'Hello! Use the /posts endpoint to interact with this worker!',
-      { headers: { 'content-type': 'text/plain' } },
-    )
   }
 }
 
@@ -40,6 +35,11 @@ async function handleGETRequest(request) {
     return new Response(value, {
       headers: headers,
     })
+  } else if (url.pathname === '/') {
+    return new Response(
+      'Hello! Use the /posts endpoint to interact with this worker!',
+      { headers: { 'content-type': 'text/plain' } },
+    )
   }
   return new Response(null, { status: 404 })
 }
