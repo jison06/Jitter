@@ -16,6 +16,8 @@ async function handleRequest(request) {
     return handleGETRequest(request)
   } else if (request.method === 'POST') {
     return handlePOSTRequest(request)
+  } else if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers: corsHeaders })
   } else {
     return handlePATCHRequest(request)
   }
@@ -25,10 +27,9 @@ async function handleGETRequest(request) {
   let url = new URL(request.url)
   if (url.pathname === '/posts') {
     let value = await general_social_media.get('posts')
+    let headers = { ...corsHeaders, 'content-type': 'application/json' }
     return new Response(value, {
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: headers,
     })
   } else if (url.pathname === '/reset') {
     let posts = [
@@ -91,13 +92,8 @@ async function handlePOSTRequest(request) {
     await general_social_media.put('posts', JSON.stringify(allPosts))
     let headers = { ...corsHeaders, 'content-type': 'application/json' }
     return new Response(JSON.stringify(newPost), {
-      headers: {
-        headers,
-      },
+      headers: headers,
     })
-  } else if (url.pathname === '/upload') {
-    let image = JSON.parse(await request.text())
-    await general_social_media.put('images', image)
   }
 
   return new Response(null, { status: 404 })

@@ -89,7 +89,7 @@ const App = () => {
         setPosts(response.data);
       })
       .catch(function (error) {
-        console.log(JSON.stringify(data));
+        console.log(error);
       });
   };
   const handleDislikeButtonClick = (postId) => {
@@ -103,7 +103,7 @@ const App = () => {
         setPosts(response.data);
       })
       .catch(function (error) {
-        console.log(JSON.stringify(data));
+        console.log(error);
       });
   };
   const RenderModal = (createButtonClicked, numberOfPosts) => {
