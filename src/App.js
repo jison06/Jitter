@@ -31,7 +31,7 @@ const RenderCards = (posts, likeMethod, dislikeMethod) => {
                 dislikeMethod={dislikeMethod}
                 postLikes={post.likes}
                 postDislikes={post.dislikes}
-                date={new Date(post.date)
+                date={new Date(post.date) //formatting it to be date & time without seconds
                   .toLocaleString()
                   .replace(/(.*)\D\d+/, "$1")}
               />
@@ -59,6 +59,7 @@ const App = () => {
   const handleCancelClick = () => {
     setCreateButtonClicked(false);
   };
+  //creates a new post when user submits modal
   const handleSubmit = (form) => {
     let newPost = {
       title: form.title,
@@ -111,6 +112,7 @@ const App = () => {
       if (createButtonClicked) {
         return (
           <>
+            {/* renders the modal when user clicks the button */}
             <BaseForm
               formName="Post"
               onCancelClick={handleCancelClick}
@@ -121,6 +123,7 @@ const App = () => {
         );
       } else {
         return (
+          //creates a sticky button
           <Affix offsetBottom={60}>
             <Button
               type="primary"

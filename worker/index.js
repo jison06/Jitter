@@ -8,7 +8,7 @@ addEventListener('fetch', (event) => {
   event.respondWith(handleRequest(event.request))
 })
 /**
- * Respond with hello worker text
+ * Routes different types of HTTP requests
  * @param {Request} request
  */
 async function handleRequest(request) {
@@ -23,6 +23,10 @@ async function handleRequest(request) {
   }
 }
 
+/**
+ * Gets all the posts in KV
+ * @param {Request} request
+ */
 async function handleGETRequest(request) {
   let url = new URL(request.url)
   if (url.pathname === '/posts') {
@@ -31,39 +35,20 @@ async function handleGETRequest(request) {
     return new Response(value, {
       headers: headers,
     })
-  } else if (url.pathname === '/reset') {
-    let posts = [
-      {
-        id: 1,
-        title: 'My First Post',
-        username: 'coolguy123',
-        content: "Hey Y'all!",
-        date: Date.now(),
-        dislikes: 0,
-        likes: 0,
-      },
-      {
-        id: 2,
-        title: 'Story About my Dogs',
-        username: 'kn0thing',
-        content: 'So the other day I was in the yard, and...',
-        date: Date.now(),
-        dislikes: 0,
-        likes: 0,
-      },
-    ]
-    await general_social_media.put('posts', JSON.stringify(posts))
   }
-
   return new Response(null, { status: 404 })
 }
 
+/**
+ * Increments the number of likes/dislikes of a post
+ * @param {Request} request
+ */
 async function handlePATCHRequest(request) {
   let url = new URL(request.url)
   if (url.pathname === '/posts') {
     let allPosts = JSON.parse(await general_social_media.get('posts')) || []
     let data = await request.json()
-    let postToModify = allPosts.find((e) => e.id === data.id)
+    let postToModify = allPosts.find((e) => e.id === data.id) //finding the post to modify
     if (data.dislikes) {
       postToModify.dislikes += 1
     } else {
@@ -80,13 +65,17 @@ async function handlePATCHRequest(request) {
   return new Response(null, { status: 404 })
 }
 
+/**
+ * Creates a new post
+ * @param {Request} request
+ */
 async function handlePOSTRequest(request) {
   let url = new URL(request.url)
   if (url.pathname === '/posts') {
     let allPosts = JSON.parse(await general_social_media.get('posts')) || []
     let newPost = JSON.parse(await request.text())
-    let mostCurrentPost = allPosts.pop()
-    newPost.id = mostCurrentPost.id + 1
+    let mostCurrentPost = allPosts.pop() //getting the latest post in KV
+    newPost.id = mostCurrentPost.id + 1 //adding an index to the new post
     allPosts.push(mostCurrentPost)
     allPosts.push(newPost)
     await general_social_media.put('posts', JSON.stringify(allPosts))

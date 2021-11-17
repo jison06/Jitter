@@ -1,6 +1,7 @@
 import { Card, Button } from "antd";
 import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
 
+//custom component for card actions
 const CardButton = ({ buttonIcon, method, quantity, id }) => {
   return (
     <Button icon={buttonIcon} onClick={() => method(id)} type="text">
